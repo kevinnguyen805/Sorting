@@ -35,27 +35,39 @@ def bubble_sort( arr ):
 
 
 # STRETCH: implement the Count Sort function below
-def count_sort( arr, maximum=-1 ):
+
+def count_sort(arr, maximum=-1):
+    size = len(arr)
+    
+    """ find the largest element in the array """
     maximum = -1
-    for i in range(0, len(arr)-1):
+    for i in range(0, size-1):
         if arr[i] > maximum:
             maximum = arr[i]
+        if arr[i] < 0:
+            return 'Error, negative numbers not allowed in Count Sort'
     
-    newArr = []
-    for i in range(0, maximum):
-        newArr[i] = 0
+    """ initialize counting array (with unique characters) and  """
+    output = [0] * size   #len(arr) 
+    count_arr = [0] * (maximum+1)
+
+    """ get frequency of each unique character stored in its respective index"""
+    for i in range(0, size):
+        count_arr[arr[i]] += 1
     
-    for i in range(0, len(arr)-1):
-        newArr[arr[i]] += 1
+    """ find cumulative sum """   
+    for i in range(1, len(count_arr)):
+        count_arr[i] += count_arr[i-1]
 
-    # for i in range(0, len(arr)-1):
-
-
-
+    """ starting from the back,  """
+    i = size - 1
+    while i >= 0:
+        output[count_arr[arr[i]]-1] = arr[i]
+        count_arr[arr[i]] -= 1
+        i -= 1
+    
+    for i in range(0, size):
+        arr[i] = output[i]
+    
     return arr
 
-# sorting algorithm 
-# counting sort = counting occurrances
-# counting each item for its unique occurrances 
-# maximum = number of elements from 0 to element
-# make an array size maximum to track occurrances 
